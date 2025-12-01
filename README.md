@@ -13,7 +13,7 @@ Designed for a Computer Networks course assignment to demonstrate:
 
 ---
 
-## 📌 Overview
+## Overview
 
 This project includes:
 
@@ -31,7 +31,7 @@ Each chat room is managed by its own **dedicated worker thread**, enabling concu
 
 ---
 
-## 📦 Packet Format
+## Packet Format
 
 A lightweight, custom packet structure is used instead of TCP streams:
 
@@ -51,20 +51,7 @@ typedef struct Packet {
 } packet;
 ```
 
----
-
-## 🗂 Project Structure
-
-```
-/project
-│── ChatroomServer.c
-│── ChatClient.c
-│── README.md
-```
-
----
-
-## ⚙ How It Works
+## How It Works
 
 ### Server
 
@@ -153,7 +140,7 @@ Example:
 
 ---
 
-## 🖥 Example Session
+## Example Session
 
 **Server Terminal**
 
@@ -187,7 +174,7 @@ Hi Alice!
 
 ---
 
-## 🧠 Architecture Summary
+## Architecture Summary
 
 | Component                | Responsibility                       |
 | ------------------------ | ------------------------------------ |
@@ -199,7 +186,7 @@ Hi Alice!
 
 ---
 
-## ✨ Features
+##  Features
 
 * Multi-client support
 * Multi-room support
@@ -210,11 +197,3 @@ Hi Alice!
 
 ---
 
-## 🚀 Future Enhancements (optional ideas)
-
-* User presence notifications
-* Encryption (DTLS)
-* Administrative commands (/list, /rooms, etc.)
-* Persistent message logs on disk
-
----
