@@ -77,7 +77,7 @@ typedef struct Packet {
 
 ---
 
-## 🛠 Compilation
+## Compilation
 
 ### Server:
 
@@ -99,7 +99,7 @@ gcc ChatClient.c -o client -lpthread
 
 ---
 
-## ▶ Running the Program
+##  Running the Program
 
 ### Start the Server
 
