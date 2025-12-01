@@ -129,7 +129,7 @@ Example:
 
 ---
 
-## 💬 Client Commands
+##  Client Commands
 
 | Command            | Description                |
 | ------------------ | -------------------------- |
