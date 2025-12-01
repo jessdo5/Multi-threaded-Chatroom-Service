@@ -91,12 +91,6 @@ gcc ChatroomServer.c -o server -lpthread
 gcc ChatClient.c -o client -lpthread
 ```
 
-> If you see warnings about `close()`, add:
-
-```c
-#include <unistd.h>
-```
-
 ---
 
 ##  Running the Program
