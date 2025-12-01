@@ -88,7 +88,7 @@ gcc ChatroomServer.c -o server -lpthread
 ### Client:
 
 ```bash
-gcc ChatClient.c -o client -lpthread
+gcc ChatroomClient.c -o client -lpthread
 ```
 
 ---
