@@ -1,7 +1,6 @@
 # Multi-threaded UDP Chatroom Service
 
-A simple and scalable **multi-threaded chatroom** implemented in **C** using **UDP sockets** on Unix/Linux.
-Designed for a Computer Networks course assignment to demonstrate:
+A simple and scalable **multi-threaded chatroom** implemented in **C** using **UDP sockets** for asynchronous communication. It demonstrates practical concepts in concurrency, messaging, and dynamic resource management, including:
 
 * UDP socket communication
 * Structured packet protocol
