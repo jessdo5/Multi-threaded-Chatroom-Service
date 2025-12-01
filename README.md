@@ -1,23 +1,39 @@
-# Multi-threaded Chatroom Service
+# Multi-threaded UDP Chatroom Service
 
-A simple UDP-based, multi-threaded chatroom system implemented in C for Unix/Linux environments.  
-This project was created for a computer networks assignment and demonstrates:
+A simple and scalable **multi-threaded chatroom** implemented in **C** using **UDP sockets** on Unix/Linux.
+Designed for a Computer Networks course assignment to demonstrate:
 
-- UDP communication  
-- Structured packet design  
-- A dispatcher thread  
-- Per-room worker threads  
-- Message queues  
-- User lists  
-- Basic message logging  
+* UDP socket communication
+* Structured packet protocol
+* Dispatcher thread design pattern
+* Per-room worker threads
+* Thread-safe message queues
+* Dynamic room creation and cleanup
+* Basic message broadcasting and logging
 
 ---
 
-This system implements a **single chat server** and multiple **chat clients**.  
-Clients can join chat rooms, send messages, and leave rooms.  
-Each chat room is served by its own dedicated thread.
+## 📌 Overview
 
-Unlike TCP, this system uses **UDP sockets** and a custom structured packet format:
+This project includes:
+
+* A **single chat server**
+* Multiple **chat clients**
+
+Clients can:
+
+* Join chat rooms
+* Send broadcast messages
+* Leave rooms
+* Exit safely
+
+Each chat room is managed by its own **dedicated worker thread**, enabling concurrency and scalable design.
+
+---
+
+## 📦 Packet Format
+
+A lightweight, custom packet structure is used instead of TCP streams:
 
 ```c
 typedef enum PacketType {
@@ -33,138 +49,172 @@ typedef struct Packet {
     char username[32];
     char message[512];
 } packet;
+```
+
+---
+
+## 🗂 Project Structure
+
+```
 /project
 │── ChatroomServer.c
 │── ChatClient.c
 │── README.md
-How It Works
-Server
+```
 
-Listens on a fixed UDP port (default: 5000).
+---
 
-Uses a dispatcher thread to receive packets from clients and forward them to the appropriate chat room.
+## ⚙ How It Works
 
-Creates chat rooms on demand.
+### Server
 
-Each chat room runs in its own worker thread:
+* Listens on a fixed UDP port (**default: 5000**)
+* One **dispatcher thread**:
 
-Maintains a message queue and message log.
+  * Receives client packets
+  * Routes them to the appropriate chatroom
+* Chat rooms created **on demand**
+* Each room has:
 
-Broadcasts messages to all users in the room.
+  * Worker thread
+  * User list
+  * Message queue
+  * Persistent message log
+* Rooms self-destruct when empty
 
-Deletes itself when empty.
+### Client
 
-Client
+* Single UDP socket instance
+* **Receiver thread**: listens for server messages
+* **Main thread**: reads user input and sends packets
+* Simple command-based interaction
 
-Single UDP socket bound to a local port.
+---
 
-Receiver thread listens for messages from the server.
+## 🛠 Compilation
 
-Main thread reads user input, constructs packets, and sends them to the server.
+### Server:
 
-Users can join or leave rooms and send messages.Compilation
-
-Server:
-
+```bash
 gcc ChatroomServer.c -o server -lpthread
+```
 
+### Client:
 
-Client:
-
+```bash
 gcc ChatClient.c -o client -lpthread
+```
 
+> If you see warnings about `close()`, add:
 
-If close() warnings appear, add #include <unistd.h> at the top.
+```c
+#include <unistd.h>
+```
 
-Running the Programs
-Start the Server
+---
+
+## ▶ Running the Program
+
+### Start the Server
+
+```bash
 ./server
+```
 
+Expected:
 
-Expected output:
-
+```
 Server running on port 5000...
+```
 
-Start Clients
+### Start Clients
+
+```bash
 ./client <server_ip> <server_port> <username>
-
+```
 
 Example:
 
+```bash
 ./client 127.0.0.1 5000 Alice
 ./client 127.0.0.1 5000 Bob
+```
 
-Client Commands
-Command	Description
-/join <roomname>	Join or create a chat room
-/leave	Leave the current room
-/quit	Exit the client
-anything else	Sends a chat message
-Example Workflow
+---
 
-Server Terminal:
+## 💬 Client Commands
 
+| Command            | Description                |
+| ------------------ | -------------------------- |
+| `/join <roomname>` | Join or create a chat room |
+| `/leave`           | Leave the current room     |
+| `/quit`            | Exit the client            |
+| Any other text     | Sends a chat message       |
+
+---
+
+## 🖥 Example Session
+
+**Server Terminal**
+
+```
 ./server
 Server running on port 5000...
+```
 
+**Client 1**
 
-Client 1 Terminal:
-
+```
 ./client 127.0.0.1 5000 Alice
 /join first
 Hello everyone!
+```
 
+**Client 2**
 
-Client 2 Terminal:
-
+```
 ./client 127.0.0.1 5000 Bob
 /join first
 Hi Alice!
+```
 
+**Output Broadcast**
 
-Output Example:
+```
+[first] Alice: Hello everyone!
+[first] Bob: Hi Alice!
+```
 
-Alice sees: [first] Bob: Hi Alice!
+---
 
-Bob sees: [first] Alice: Hello everyone!
+## 🧠 Architecture Summary
 
-Design Summary
-Server
+| Component                | Responsibility                       |
+| ------------------------ | ------------------------------------ |
+| Dispatcher Thread        | Handles all incoming UDP packets     |
+| Room Manager             | Tracks room existence + active users |
+| Worker Thread (per-room) | Broadcasts and logs messages         |
+| Client Receiver Thread   | Displays server messages             |
+| Client Main Thread       | Handles input and packet generation  |
 
-Dispatcher thread receives all client packets.
+---
 
-Maintains a room manager storing all chat rooms.
+## ✨ Features
 
-Each room contains:
+* Multi-client support
+* Multi-room support
+* UDP socket communication
+* Dynamic room creation and destruction
+* Thread-safe message delivery
+* Lightweight custom protocol
 
-Message queue
+---
 
-Log queue
+## 🚀 Future Enhancements (optional ideas)
 
-User list
+* User presence notifications
+* Encryption (DTLS)
+* Administrative commands (/list, /rooms, etc.)
+* Persistent message logs on disk
 
-Worker thread
-
-Client
-
-Single UDP socket.
-
-Receiver thread listens for server messages.
-
-Main thread handles user input and sends structured packets.
-
-Features
-
-Supports multiple clients and chat rooms.
-
-Rooms created on demand.
-
-Messages are broadcasted to all users in a room.
-
-Message history is maintained.
-
-Rooms are deleted when empty.
-
-Thread-safe queues and UDP communication.
-
-Enum-based packet protocol ensures consistency.
+---
